@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RealEstateMarket.Api.Context;
-using RealEstateMarket.Api.Models;
-using RealEstateMarket.Api.Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using RealEstateMarket.Api.DTOs;
+using RealEstateMarket.Application.Interfaces;
+using RealEstateMarket.Domain.Entities;
 
 namespace RealEstateMarket.Api.Controllers
 {
@@ -39,25 +37,54 @@ namespace RealEstateMarket.Api.Controllers
             return Ok(realEstate); 
         }
 
-        // todo
 
-        //// POST api/<RealEstateController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
+        // POST api/<RealEstateController>
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] RealEstateDTO realEstate)
+        {
+            // todo: automapper
+            var createdRealEstate = new RealEstate
+            {
+                City = realEstate.City,
+                Description = realEstate.Description,
+                Email = realEstate.Email,
+                HouseNumber = realEstate.HouseNumber,
+                Id = new Guid(),
+                Phone = realEstate.Phone,
+                Price = realEstate.Price,
+                Region = realEstate.Region,
+                StreetName = realEstate.StreetName,
+                ZipCode = realEstate.ZipCode,
+            };
+            await _realEstateRepository.InsertAsync(createdRealEstate);
+            return Ok(new { message = "Real estate created." });
+        }
 
-        //}
+        // PUT api/<RealEstateController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id, [FromBody] RealEstateDTO realEstate)
+        {
+            var updatedRealEstate = await _realEstateRepository.GetByIdAsync(id);
+            updatedRealEstate.City = realEstate.City;
+            updatedRealEstate.Description = realEstate.Description;
+            updatedRealEstate.Email = realEstate.Email;
+            updatedRealEstate.HouseNumber = realEstate.HouseNumber;
+            updatedRealEstate.Phone = realEstate.Phone;
+            updatedRealEstate.Price = realEstate.Price;
+            updatedRealEstate.Region = realEstate.Region;
+            updatedRealEstate.StreetName = realEstate.StreetName;
+            updatedRealEstate.ZipCode = realEstate.ZipCode;
+            await _realEstateRepository.UpdateAsync(updatedRealEstate);
 
-        //// PUT api/<RealEstateController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+            return Ok(new { message = "Real estate updated." });
+        }
 
-        //// DELETE api/<RealEstateController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        // DELETE api/<RealEstateController>/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _realEstateRepository.DeleteAsync(id);
+            return Ok(new { message = "Real estate deleted." });
+        }
     }
 }
