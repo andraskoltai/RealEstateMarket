@@ -9,11 +9,13 @@ namespace RealEstateMarket.Api.Controllers
     [ApiController]
     public class RealEstateController : ControllerBase
     {
-        private IRealEstateRepository _realEstateRepository;
+        private readonly IRealEstateRepository _realEstateRepository;
+        private readonly ILogger<RealEstateController> _logger;
 
-        public RealEstateController(IRealEstateRepository realEstateRepository)
+        public RealEstateController(IRealEstateRepository realEstateRepository, ILogger<RealEstateController> logger)
         {
             this._realEstateRepository = realEstateRepository;
+            this._logger = logger;
         }
 
 
@@ -21,6 +23,7 @@ namespace RealEstateMarket.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            _logger.LogInformation("Requesting every real estate.");
             return Ok(await _realEstateRepository.GetAllAsync());
         }
 

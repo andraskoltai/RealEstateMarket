@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateMarket.Application.Interfaces;
 using RealEstateMarket.Infrastructure.Data;
+using Serilog;
 
 namespace RealEstateMarket.Api
 {
@@ -23,6 +24,13 @@ namespace RealEstateMarket.Api
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("RealEstateMarketConnection")));
 
             builder.Services.AddScoped<IRealEstateRepository, RealEstateRepository>();
+
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(builder.Configuration)
+                .Enrich.FromLogContext()
+                .CreateLogger();
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
 
             var app = builder.Build();
 
