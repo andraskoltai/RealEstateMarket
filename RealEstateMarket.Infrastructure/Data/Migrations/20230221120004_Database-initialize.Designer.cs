@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RealEstateMarket.Api.Context;
+using RealEstateMarket.Infrastructure.Data;
 
 #nullable disable
 
-namespace RealEstateMarket.Api.Migrations
+namespace RealEstateMarket.Infrastructure.Migrations
 {
     [DbContext(typeof(RealEstateMarketContext))]
-    partial class RealEstateMarketContextModelSnapshot : ModelSnapshot
+    [Migration("20230221120004_Database-initialize")]
+    partial class Databaseinitialize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace RealEstateMarket.Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("RealEstateMarket.Api.Models.RealEstate", b =>
+            modelBuilder.Entity("RealEstateMarket.Domain.Entities.RealEstate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,12 +63,12 @@ namespace RealEstateMarket.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Real estate");
+                    b.ToTable("RealEstates");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cb4a0985-6f04-48e9-aed9-a186479ff088"),
+                            Id = new Guid("80482d63-baf3-4a50-9bf8-86934f9f3776"),
                             City = "Budapest",
                             Description = "leírás",
                             Email = "lorem@ipsum.net",
@@ -78,7 +81,7 @@ namespace RealEstateMarket.Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5e256c66-e291-4f2d-8b90-c5f5f3f8e773"),
+                            Id = new Guid("1e48bfd5-00cb-40eb-91f3-b99af0aa5d96"),
                             City = "Budapest",
                             HouseNumber = 10L,
                             Phone = "+36302345678",
@@ -89,7 +92,7 @@ namespace RealEstateMarket.Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b3666060-38bb-4000-9963-d4c37727980d"),
+                            Id = new Guid("aa12f167-87a9-4c87-8d3b-e87b47705d65"),
                             City = "Zalaegerszeg",
                             Description = "leírás2",
                             HouseNumber = 335L,

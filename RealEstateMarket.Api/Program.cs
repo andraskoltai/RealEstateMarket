@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using RealEstateMarket.Api.Context;
-using RealEstateMarket.Api.Services;
+using RealEstateMarket.Application.Interfaces;
+using RealEstateMarket.Infrastructure.Data;
 
 namespace RealEstateMarket.Api
 {
@@ -16,6 +16,8 @@ namespace RealEstateMarket.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+
 
             builder.Services.AddDbContext<RealEstateMarketContext>(options 
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("RealEstateMarketConnection")));

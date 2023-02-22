@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace RealEstateMarket.Api.Migrations
+namespace RealEstateMarket.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class m1 : Migration
+    public partial class Databaseinitialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Real estate",
+                name: "RealEstates",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -30,17 +30,17 @@ namespace RealEstateMarket.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Real estate", x => x.Id);
+                    table.PrimaryKey("PK_RealEstates", x => x.Id);
                 });
 
             migrationBuilder.InsertData(
-                table: "Real estate",
+                table: "RealEstates",
                 columns: new[] { "Id", "City", "Description", "Email", "HouseNumber", "Phone", "Price", "Region", "StreetName", "ZipCode" },
                 values: new object[,]
                 {
-                    { new Guid("5e256c66-e291-4f2d-8b90-c5f5f3f8e773"), "Budapest", null, null, 10L, "+36302345678", 380000000L, "Pest", "Kossuth Lajos utca", (short)1234 },
-                    { new Guid("b3666060-38bb-4000-9963-d4c37727980d"), "Zalaegerszeg", "leírás2", null, 335L, null, 29000000L, "Zala", "Arany János út", (short)8900 },
-                    { new Guid("cb4a0985-6f04-48e9-aed9-a186479ff088"), "Budapest", "leírás", "lorem@ipsum.net", 10L, "+36301234567", 50000000L, "Pest", "Petőfi Sándor utca", (short)1234 }
+                    { new Guid("1e48bfd5-00cb-40eb-91f3-b99af0aa5d96"), "Budapest", null, null, 10L, "+36302345678", 380000000L, "Pest", "Kossuth Lajos utca", (short)1234 },
+                    { new Guid("80482d63-baf3-4a50-9bf8-86934f9f3776"), "Budapest", "leírás", "lorem@ipsum.net", 10L, "+36301234567", 50000000L, "Pest", "Petőfi Sándor utca", (short)1234 },
+                    { new Guid("aa12f167-87a9-4c87-8d3b-e87b47705d65"), "Zalaegerszeg", "leírás2", null, 335L, null, 29000000L, "Zala", "Arany János út", (short)8900 }
                 });
         }
 
@@ -48,7 +48,7 @@ namespace RealEstateMarket.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Real estate");
+                name: "RealEstates");
         }
     }
 }

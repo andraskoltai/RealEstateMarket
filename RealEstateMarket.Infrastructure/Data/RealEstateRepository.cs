@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RealEstateMarket.Api.Context;
-using RealEstateMarket.Api.Models;
+using RealEstateMarket.Application.Interfaces;
+using RealEstateMarket.Domain.Entities;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace RealEstateMarket.Api.Services
+namespace RealEstateMarket.Infrastructure.Data
 {
     public class RealEstateRepository : IRealEstateRepository
     {
@@ -15,10 +19,11 @@ namespace RealEstateMarket.Api.Services
         }
 
 
-        public async void DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var realEstate = await GetByIdAsync(id);
             _context.RealEstates.Remove(realEstate);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<RealEstate>> GetAllAsync()
@@ -36,7 +41,7 @@ namespace RealEstateMarket.Api.Services
             return await _context.RealEstates.FirstOrDefaultAsync(re => re.Id == id);
         }
 
-        public async void InsertAsync(RealEstate realEstate)
+        public async Task InsertAsync(RealEstate realEstate)
         {
             if (realEstate == null)
             {
@@ -47,7 +52,7 @@ namespace RealEstateMarket.Api.Services
             await _context.SaveChangesAsync();
         }
 
-        public async void UpdateAsync(RealEstate realEstate)
+        public async Task UpdateAsync(RealEstate realEstate)
         {
             _context.Entry(realEstate).State = EntityState.Modified;
             await _context.SaveChangesAsync();

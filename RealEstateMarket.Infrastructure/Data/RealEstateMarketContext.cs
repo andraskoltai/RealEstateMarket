@@ -1,7 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RealEstateMarket.Api.Models;
+using RealEstateMarket.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace RealEstateMarket.Api.Context
+namespace RealEstateMarket.Infrastructure.Data
 {
     public class RealEstateMarketContext : DbContext
     {
