@@ -45,11 +45,6 @@ namespace RealEstateMarket.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RealEstateDTO realEstate)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { message = "Invalid real estate format." });
-            }
-
             // todo: automapper
             var createdRealEstate = new RealEstate
             {
@@ -64,7 +59,6 @@ namespace RealEstateMarket.Api.Controllers
                 StreetName = realEstate.StreetName,
                 ZipCode = realEstate.ZipCode,
             };
-
             await _realEstateRepository.InsertAsync(createdRealEstate);
             return Ok(new { message = "Real estate created." });
         }
