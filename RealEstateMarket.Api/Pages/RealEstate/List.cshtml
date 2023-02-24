@@ -1,0 +1,23 @@
+﻿@page
+@model RealEstateMarket.Api.Pages.RealEstate.ListModel
+<h1>Real estate page</h1>
+<h2>Address</h2>
+<p>
+    @Model.RealEstate.Region<br />
+    @Model.RealEstate.City<br />
+    @Model.RealEstate.ZipCode<br />
+    @Model.RealEstate.StreetName<br />
+    @Model.RealEstate.HouseNumber<br />
+</p>
+<h2>Price: @Model.RealEstate.Price (currency)</h2>
+<h2>Description</h2>
+<p>@Model.RealEstate.Description</p>
+<h2>Contacts</h2>
+@if (Model.RealEstate.Email != null)
+{
+    <p>@Model.RealEstate.Email</p>
+}
+@if (Model.RealEstate.Phone != null)
+{
+    <p>@Model.RealEstate.Phone</p>
+}

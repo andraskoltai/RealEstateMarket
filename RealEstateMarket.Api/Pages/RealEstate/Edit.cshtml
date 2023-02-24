@@ -1,0 +1,27 @@
+﻿@page
+@model RealEstateMarket.Api.Pages.RealEstate.EditModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h1>Edit real estate</h1>
+<form method="post">
+    Region:
+    <input asp-for="RealEstate.Region" />
+    City:
+    <input asp-for="RealEstate.City" />
+    Zip:
+    <input asp-for="RealEstate.ZipCode" />
+    Street Name:
+    <input asp-for="RealEstate.StreetName" />
+    House Number:
+    <input asp-for="RealEstate.HouseNumber" />
+    Price:
+    <input asp-for="RealEstate.Price" />
+    Description:
+    <input asp-for="RealEstate.Description" />
+    Email:
+    <input asp-for="RealEstate.Email" />
+    Phone:
+    <input asp-for="RealEstate.Phone" />
+    <input type="hidden" asp-for="RealEstate.Id" />
+    <input type="submit" />
+</form>

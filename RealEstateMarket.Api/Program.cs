@@ -18,9 +18,12 @@ namespace RealEstateMarket.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddRazorPages();
+
+            builder.Services.AddHttpClient();
 
 
-            builder.Services.AddDbContext<RealEstateMarketContext>(options 
+            builder.Services.AddDbContext<RealEstateMarketContext>(options
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("RealEstateMarketConnection")));
 
             builder.Services.AddScoped<IRealEstateRepository, RealEstateRepository>();
@@ -47,6 +50,8 @@ namespace RealEstateMarket.Api
 
 
             app.MapControllers();
+
+            app.MapRazorPages();
 
             app.Run();
         }
