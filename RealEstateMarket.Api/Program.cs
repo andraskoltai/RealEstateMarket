@@ -18,6 +18,9 @@ namespace RealEstateMarket.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddRazorPages();
+
+            builder.Services.AddHttpClient();
 
 
             builder.Services.AddDbContext<RealEstateMarketContext>(options 
@@ -47,6 +50,8 @@ namespace RealEstateMarket.Api
 
 
             app.MapControllers();
+
+            app.MapRazorPages();
 
             app.Run();
         }
