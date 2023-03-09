@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateMarket.Api.DTOs;
 using RealEstateMarket.Application.Interfaces;
+using RealEstateMarket.Domain;
 using RealEstateMarket.Domain.Entities;
 
 namespace RealEstateMarket.Api.Controllers
@@ -21,10 +23,10 @@ namespace RealEstateMarket.Api.Controllers
 
         // GET: api/<RealEstateController>
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllPaged([FromQuery]PaginationFilter paginationFilter)
         {
-            _logger.LogInformation("Requesting every real estate.");
-            return Ok(await _realEstateRepository.GetAllAsync());
+            _logger.LogInformation("Requesting real estates from... to... .");
+            return Ok(await _realEstateRepository.GetAllPagedAsync(paginationFilter));
         }
 
         // GET api/<RealEstateController>/5
@@ -45,11 +47,6 @@ namespace RealEstateMarket.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RealEstateDTO realEstate)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { message = "Invalid real estate format." });
-            }
-
             // todo: automapper
             var createdRealEstate = new RealEstate
             {
@@ -57,7 +54,7 @@ namespace RealEstateMarket.Api.Controllers
                 Description = realEstate.Description,
                 Email = realEstate.Email,
                 HouseNumber = realEstate.HouseNumber,
-                Id = new Guid(),
+                Guid = Guid.NewGuid(),
                 Phone = realEstate.Phone,
                 Price = realEstate.Price,
                 Region = realEstate.Region,

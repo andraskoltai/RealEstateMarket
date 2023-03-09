@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealEstateMarket.Application.Interfaces;
+using RealEstateMarket.Domain;
 using RealEstateMarket.Domain.Entities;
 
 namespace RealEstateMarket.Infrastructure.Data
@@ -21,9 +22,13 @@ namespace RealEstateMarket.Infrastructure.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<RealEstate>> GetAllAsync()
+        public async Task<IEnumerable<RealEstate>> GetAllPagedAsync(PaginationFilter paginationFilter)
         {
-            return await _context.RealEstates.ToListAsync();
+            return await _context.RealEstates
+                .OrderBy(re=>re.Id)
+                .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
+                .Take(paginationFilter.PageSize)
+                .ToListAsync();
         }
 
         public async Task<RealEstate> GetByIdAsync(Guid id)
@@ -33,7 +38,7 @@ namespace RealEstateMarket.Infrastructure.Data
                 throw new ArgumentNullException(nameof(id));
             }
 
-            return await _context.RealEstates.FirstOrDefaultAsync(re => re.Id == id);
+            return await _context.RealEstates.FirstOrDefaultAsync(re => re.Guid == id);
         }
 
         public async Task InsertAsync(RealEstate realEstate)
