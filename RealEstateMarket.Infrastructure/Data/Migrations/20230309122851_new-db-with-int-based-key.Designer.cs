@@ -12,8 +12,8 @@ using RealEstateMarket.Infrastructure.Data;
 namespace RealEstateMarket.Infrastructure.Migrations
 {
     [DbContext(typeof(RealEstateMarketContext))]
-    [Migration("20230221120004_Database-initialize")]
-    partial class Databaseinitialize
+    [Migration("20230309122851_new-db-with-int-based-key")]
+    partial class newdbwithintbasedkey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,19 +27,25 @@ namespace RealEstateMarket.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateMarket.Domain.Entities.RealEstate", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("HouseNumber")
                         .HasColumnType("bigint");
@@ -52,11 +58,13 @@ namespace RealEstateMarket.Infrastructure.Migrations
 
                     b.Property<string>("Region")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("StreetName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<short>("ZipCode")
                         .HasColumnType("smallint");
@@ -68,10 +76,11 @@ namespace RealEstateMarket.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("80482d63-baf3-4a50-9bf8-86934f9f3776"),
+                            Id = 1,
                             City = "Budapest",
                             Description = "leírás",
                             Email = "lorem@ipsum.net",
+                            Guid = new Guid("a7d4e17c-9855-4bf9-a4fa-9bcfe8f7afab"),
                             HouseNumber = 10L,
                             Phone = "+36301234567",
                             Price = 50000000L,
@@ -81,8 +90,9 @@ namespace RealEstateMarket.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1e48bfd5-00cb-40eb-91f3-b99af0aa5d96"),
+                            Id = 2,
                             City = "Budapest",
+                            Guid = new Guid("59078ece-9d5b-46d2-9f63-90c55cde56d5"),
                             HouseNumber = 10L,
                             Phone = "+36302345678",
                             Price = 380000000L,
@@ -92,15 +102,50 @@ namespace RealEstateMarket.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("aa12f167-87a9-4c87-8d3b-e87b47705d65"),
+                            Id = 3,
                             City = "Zalaegerszeg",
                             Description = "leírás2",
+                            Guid = new Guid("eb771016-793d-4057-9d09-8f52ff2a6a13"),
                             HouseNumber = 335L,
                             Price = 29000000L,
                             Region = "Zala",
                             StreetName = "Arany János út",
                             ZipCode = (short)8900
                         });
+                });
+
+            modelBuilder.Entity("RealEstateMarket.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
