@@ -20,15 +20,11 @@ namespace RealEstateMarket.Api.Controllers
     public class RealEstateController : ControllerBase
     {
         private readonly IMediator _mediator;
-
-
-        private readonly IRealEstateRepository _realEstateRepository;
         private readonly ILogger<RealEstateController> _logger;
 
         public RealEstateController(IMediator mediator, IRealEstateRepository realEstateRepository, ILogger<RealEstateController> logger)
         {
             _mediator = mediator;
-            this._realEstateRepository = realEstateRepository;
             this._logger = logger;
         }
 
