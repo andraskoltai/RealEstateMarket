@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateMarket.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using RealEstateMarket.Infrastructure.Data;
 namespace RealEstateMarket.Infrastructure.Migrations
 {
     [DbContext(typeof(RealEstateMarketContext))]
-    partial class RealEstateMarketContextModelSnapshot : ModelSnapshot
+    [Migration("20230317100747_int-fix")]
+    partial class intfix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

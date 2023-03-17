@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstateMarket.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using RealEstateMarket.Infrastructure.Data;
 namespace RealEstateMarket.Infrastructure.Migrations
 {
     [DbContext(typeof(RealEstateMarketContext))]
-    partial class RealEstateMarketContextModelSnapshot : ModelSnapshot
+    [Migration("20230316104312_guid-key")]
+    partial class guidkey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,8 +61,8 @@ namespace RealEstateMarket.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("ZipCode")
-                        .HasColumnType("int");
+                    b.Property<short>("ZipCode")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Guid");
 
@@ -68,7 +71,7 @@ namespace RealEstateMarket.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Guid = new Guid("8df097c3-ec03-4ba7-bb89-687e7f9f9653"),
+                            Guid = new Guid("2b068cfe-b545-4fad-af7c-740f8cedaade"),
                             City = "Budapest",
                             Description = "leírás",
                             Email = "lorem@ipsum.net",
@@ -77,11 +80,11 @@ namespace RealEstateMarket.Infrastructure.Migrations
                             Price = 50000000L,
                             Region = "Pest",
                             StreetName = "Petőfi Sándor utca",
-                            ZipCode = 1234
+                            ZipCode = (short)1234
                         },
                         new
                         {
-                            Guid = new Guid("bffe48ce-29e2-4379-b577-9f8cd5946976"),
+                            Guid = new Guid("e326aad9-8969-4d45-a774-48b719379da0"),
                             City = "Budapest",
                             Description = "leírás",
                             HouseNumber = 10L,
@@ -89,18 +92,18 @@ namespace RealEstateMarket.Infrastructure.Migrations
                             Price = 380000000L,
                             Region = "Pest",
                             StreetName = "Kossuth Lajos utca",
-                            ZipCode = 1234
+                            ZipCode = (short)1234
                         },
                         new
                         {
-                            Guid = new Guid("73360b15-5956-4f22-ac80-e22bcc434920"),
+                            Guid = new Guid("0c9d83fb-ddc4-4ef5-8e61-3b7389549325"),
                             City = "Zalaegerszeg",
                             Description = "leírás2",
                             HouseNumber = 335L,
                             Price = 29000000L,
                             Region = "Zala",
                             StreetName = "Arany János út",
-                            ZipCode = 8900
+                            ZipCode = (short)8900
                         });
                 });
 

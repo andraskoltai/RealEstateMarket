@@ -19,4 +19,8 @@
     <ProjectReference Include="..\RealEstateMarket.Application\RealEstateMarket.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+
 </Project>

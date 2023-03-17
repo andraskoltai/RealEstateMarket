@@ -25,7 +25,7 @@ namespace RealEstateMarket.Infrastructure.Data
         public async Task<IEnumerable<RealEstate>> GetAllPagedAsync(PaginationFilter paginationFilter)
         {
             return await _context.RealEstates
-                .OrderBy(re=>re.Id)
+                //.OrderBy(re=>re.Id)
                 .Skip((paginationFilter.PageNumber - 1) * paginationFilter.PageSize)
                 .Take(paginationFilter.PageSize)
                 .ToListAsync();
