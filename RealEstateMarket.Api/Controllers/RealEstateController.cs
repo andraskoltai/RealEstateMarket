@@ -1,9 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateMarket.Api.DTOs;
 using RealEstateMarket.Application.Interfaces;
+using RealEstateMarket.Application.RealEstates.Commands.Create;
+using RealEstateMarket.Application.RealEstates.Commands.Delete;
+using RealEstateMarket.Application.RealEstates.Commands.Update;
+using RealEstateMarket.Application.RealEstates.Queries.ListAllPaged;
+using RealEstateMarket.Application.RealEstates.Queries.ListById;
 using RealEstateMarket.Domain;
 using RealEstateMarket.Domain.Entities;
+using System.Numerics;
+using System.Reflection.Emit;
 
 namespace RealEstateMarket.Api.Controllers
 {
@@ -11,11 +19,15 @@ namespace RealEstateMarket.Api.Controllers
     [ApiController]
     public class RealEstateController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+
         private readonly IRealEstateRepository _realEstateRepository;
         private readonly ILogger<RealEstateController> _logger;
 
-        public RealEstateController(IRealEstateRepository realEstateRepository, ILogger<RealEstateController> logger)
+        public RealEstateController(IMediator mediator, IRealEstateRepository realEstateRepository, ILogger<RealEstateController> logger)
         {
+            _mediator = mediator;
             this._realEstateRepository = realEstateRepository;
             this._logger = logger;
         }
@@ -23,17 +35,18 @@ namespace RealEstateMarket.Api.Controllers
 
         // GET: api/<RealEstateController>
         [HttpGet]
-        public async Task<IActionResult> GetAllPaged([FromQuery]PaginationFilter paginationFilter)
+        public async Task<IActionResult> GetAllPaged([FromQuery]ListAllPagedQuery listAllPagedQuery)
         {
+            var listResult = await _mediator.Send(listAllPagedQuery);
             _logger.LogInformation("Requesting real estates from... to... .");
-            return Ok(await _realEstateRepository.GetAllPagedAsync(paginationFilter));
+            return Ok(listResult);
         }
 
         // GET api/<RealEstateController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetById([FromRoute]ListByIdQuery listByIdQuery)
         {
-            var realEstate = await _realEstateRepository.GetByIdAsync(id);
+            var realEstate = await _mediator.Send(listByIdQuery);
             if(realEstate == null)
             {
                 return NotFound();
@@ -45,51 +58,33 @@ namespace RealEstateMarket.Api.Controllers
 
         // POST api/<RealEstateController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] RealEstateDTO realEstate)
+        public async Task<IActionResult> Post([FromBody]CreateCommand createCommand)
         {
-            // todo: automapper
-            var createdRealEstate = new RealEstate
-            {
-                City = realEstate.City,
-                Description = realEstate.Description,
-                Email = realEstate.Email,
-                HouseNumber = realEstate.HouseNumber,
-                Guid = Guid.NewGuid(),
-                Phone = realEstate.Phone,
-                Price = realEstate.Price,
-                Region = realEstate.Region,
-                StreetName = realEstate.StreetName,
-                ZipCode = realEstate.ZipCode,
-            };
+            var createResult = await _mediator.Send(createCommand);
 
-            await _realEstateRepository.InsertAsync(createdRealEstate);
-            return Ok(new { message = "Real estate created." });
+            return createResult.IsSuccesful ? 
+                Ok(new { message = "Real estate created." }) : 
+                BadRequest(new { Errors = createResult.Errors });
         }
 
         // PUT api/<RealEstateController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] RealEstateDTO realEstate)
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody]UpdateCommand updateCommand)
         {
-            var updatedRealEstate = await _realEstateRepository.GetByIdAsync(id);
-            updatedRealEstate.City = realEstate.City;
-            updatedRealEstate.Description = realEstate.Description;
-            updatedRealEstate.Email = realEstate.Email;
-            updatedRealEstate.HouseNumber = realEstate.HouseNumber;
-            updatedRealEstate.Phone = realEstate.Phone;
-            updatedRealEstate.Price = realEstate.Price;
-            updatedRealEstate.Region = realEstate.Region;
-            updatedRealEstate.StreetName = realEstate.StreetName;
-            updatedRealEstate.ZipCode = realEstate.ZipCode;
-            await _realEstateRepository.UpdateAsync(updatedRealEstate);
+            var updateResult = await _mediator.Send(updateCommand);
+            if (!updateResult.IsSuccesful)
+            {
+                return BadRequest(updateResult.Errors);
+            }
 
             return Ok(new { message = "Real estate updated." });
         }
 
         // DELETE api/<RealEstateController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete([FromRoute]DeleteCommand deleteCommand)
         {
-            await _realEstateRepository.DeleteAsync(id);
+            await _mediator.Send(deleteCommand);
             return Ok(new { message = "Real estate deleted." });
         }
     }

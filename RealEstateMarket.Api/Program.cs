@@ -28,6 +28,8 @@ namespace RealEstateMarket.Api
 
             builder.Services.AddScoped<IRealEstateRepository, RealEstateRepository>();
 
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Load("RealEstateMarket.Application")));
+
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Configuration)
                 .Enrich.FromLogContext()
