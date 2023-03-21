@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using RealEstateMarket.Application.Interfaces;
 using RealEstateMarket.Domain;
 using RealEstateMarket.Domain.Entities;
@@ -31,14 +32,14 @@ namespace RealEstateMarket.Infrastructure.Data
                 .ToListAsync();
         }
 
-        public async Task<RealEstate> GetByIdAsync(Guid id)
+        public async Task<RealEstate?> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
             {
                 throw new ArgumentNullException(nameof(id));
             }
 
-            return await _context.RealEstates.FirstOrDefaultAsync(re => re.Guid == id);
+            return await _context.RealEstates.FirstOrDefaultAsync(re => re.Id.Guid == id);
         }
 
         public async Task InsertAsync(RealEstate realEstate)
