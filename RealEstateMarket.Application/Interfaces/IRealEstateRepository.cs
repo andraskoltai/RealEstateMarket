@@ -12,7 +12,7 @@ namespace RealEstateMarket.Application.Interfaces
     {
         Task<IEnumerable<RealEstate>> GetAllPagedAsync(PaginationFilter paginationFilter);
         Task InsertAsync(RealEstate realEstate);
-        Task<RealEstate> GetByIdAsync(Guid id);
+        Task<RealEstate?> GetByIdAsync(Guid id);
         Task UpdateAsync(RealEstate realEstate);
         Task DeleteAsync(Guid id);
     }
