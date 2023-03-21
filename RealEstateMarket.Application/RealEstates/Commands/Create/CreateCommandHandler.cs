@@ -2,6 +2,8 @@
 using RealEstateMarket.Application.Interfaces;
 using RealEstateMarket.Domain.Entities;
 using RealEstateMarket.Domain.Validation;
+using RealEstateMarket.Domain.Value_Objects;
+using RealEstateMarket.Domain.Value_Objects.Ids;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,16 +24,11 @@ namespace RealEstateMarket.Application.RealEstates.Commands.Create
         public async Task<Result> Handle(CreateCommand request, CancellationToken cancellationToken)
         {
             var createdRealEstate = new RealEstate(
-                Guid.NewGuid(),
-                request.region,
-                request.city,
-                request.zipCode,
-                request.streetName,
-                request.houseNumber,
+                new RealEstateId(Guid.NewGuid()),
+                new Address(request.region, request.city, request.zipCode, request.streetName, request.houseNumber),
                 request.description,
                 request.price,
-                request.email,
-                request.phone
+                new Contacts(request.email, request.phone)
                 );
 
             var validationResult = createdRealEstate.Validation();

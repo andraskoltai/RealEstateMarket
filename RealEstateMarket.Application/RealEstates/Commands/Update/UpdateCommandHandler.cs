@@ -2,6 +2,7 @@
 using RealEstateMarket.Application.Interfaces;
 using RealEstateMarket.Domain.Entities;
 using RealEstateMarket.Domain.Validation;
+using RealEstateMarket.Domain.Value_Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,15 +30,10 @@ namespace RealEstateMarket.Application.RealEstates.Commands.Update
                 return result;
             }
 
-            updatedRealEstate.Region = request.region;
-            updatedRealEstate.City = request.city;
-            updatedRealEstate.ZipCode = request.zipCode;
-            updatedRealEstate.StreetName = request.streetName;
-            updatedRealEstate.HouseNumber = request.houseNumber;
+            updatedRealEstate.Address = new Address(request.region, request.city, request.zipCode, request.streetName, request.houseNumber);
             updatedRealEstate.Description = request.description;
             updatedRealEstate.Price = request.price;
-            updatedRealEstate.Email = request.email;
-            updatedRealEstate.Phone = request.phone;
+            updatedRealEstate.Contacts = new Contacts(request.email, request.phone);
 
             if (!updatedRealEstate.Validation().IsSuccesful)
             {
